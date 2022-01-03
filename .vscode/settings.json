@@ -1,0 +1,5 @@
+{
+    "java.import.generatesMetadataFilesAtProjectRoot": true,
+    "java.import.gradle.offline.enabled": true,
+    "java.saveActions.organizeImports": true
+}

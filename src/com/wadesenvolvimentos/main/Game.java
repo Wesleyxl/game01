@@ -1,40 +1,56 @@
 package com.wadesenvolvimentos.main;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
-import javax.swing.JFrame;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Game extends Canvas implements Runnable {
+import javax.swing.JFrame;
 
-    /**
-	 * 
-	 */
+import com.wadesenvolvimentos.entities.Entity;
+import com.wadesenvolvimentos.entities.Player;
+import com.wadesenvolvimentos.graphics.SpriteSheets;
+
+public class Game extends Canvas implements Runnable, KeyListener {
+
 	private static final long serialVersionUID = 1L;
 	
 	// variables
     private Thread thread;
     private boolean isRunning = true;
-    private final int WIDTH = 240;
-    private final int HEIGHT = 160;
-    private final int SCALE = 3;
-
-    private BufferedImage image;
     public static JFrame frame;
+    private final int WIDTH = 440;
+    private final int HEIGHT = 260;
+    private final int SCALE = 2;
+    private BufferedImage image;
+    public List<Entity> entities;
+    public SpriteSheets spriteSheets;
+    
+    private Player player;
 
     // imports
 
-
     // constructor method
     public Game(){
-      
+    	addKeyListener(this);
+    	
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
+
+        // initializing object
         image = new BufferedImage(160, 120, BufferedImage.TYPE_INT_RGB);
+        entities = new ArrayList<Entity>();
+        spriteSheets = new SpriteSheets("/spriteSheet.png");
+
+        // Player
+        player = new Player(0, 0, 16, 16, spriteSheets.getSprite(32, 0, 16, 16));
+        entities.add(player);
     }
 
     public static void main(String args[]) {
@@ -70,7 +86,10 @@ public class Game extends Canvas implements Runnable {
 
     // geme logics 
     public void tick() {
-
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            e.tick();
+        }
     }
 
     // renders graphics 
@@ -86,7 +105,10 @@ public class Game extends Canvas implements Runnable {
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         /* rendering game */
-        
+        for (int i = 0; i < entities.size(); i++) {
+            Entity e = entities.get(i);
+            e.render(g);
+        }
         /* end rendering game */
 
         g.dispose();
@@ -132,5 +154,59 @@ public class Game extends Canvas implements Runnable {
 
         stop();
     }
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			// right
+			player.right = true;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			// left
+			player.left = true;
+			
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			// up
+			player.up = true;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			// down
+			player.down = true;
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// // TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			// right
+			player.right = false;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			// left
+			player.left = false;
+			
+		}
+		
+		if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			// up
+			player.up = false;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			// down
+			player.down = false;
+		}
+		
+	}
 
 }
