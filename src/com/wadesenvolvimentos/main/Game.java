@@ -25,12 +25,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private Thread thread;
     private boolean isRunning = true;
     public static JFrame frame;
-    private final int WIDTH = 440;
-    private final int HEIGHT = 260;
+    private final int WIDTH = 620;
+    private final int HEIGHT = 380;
     private final int SCALE = 2;
     private BufferedImage image;
     public List<Entity> entities;
-    public SpriteSheets spriteSheets;
+    public static SpriteSheets spriteSheets;
     
     private Player player;
 
@@ -39,7 +39,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     // constructor method
     public Game(){
     	addKeyListener(this);
-    	
+    		
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initFrame();
 
